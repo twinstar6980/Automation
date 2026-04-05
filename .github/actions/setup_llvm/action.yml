@@ -1,0 +1,40 @@
+name: _
+description: _
+inputs:
+  host_platform:
+    required: true
+  version:
+    required: true
+  windows_version:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: install
+      if: ${{ inputs.host_platform == 'windows' }}
+      shell: pwsh
+      run: |
+        winget install --id "MartinStorsjo.LLVM-MinGW.UCRT" --version "${{ inputs.windows_version }}" --source "winget" --exact --silent --accept-source-agreements --disable-interactivity
+        Add-Content -Encoding utf8 -Path $env:GITHUB_PATH -Value "$((Resolve-Path -Path "$env:LOCALAPPDATA/Microsoft/WinGet/Packages/MartinStorsjo.LLVM-MinGW.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/llvm-mingw-*/bin").Path)"
+    - name: install
+      if: ${{ inputs.host_platform == 'linux' }}
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/.local/temporary/setup_llvm"
+        Invoke-WebRequest -Uri "https://apt.llvm.org/llvm.sh" -OutFile "${{ github.workspace }}/.local/temporary/setup_llvm/llvm.sh"
+        chmod +x "${{ github.workspace }}/.local/temporary/setup_llvm/llvm.sh"
+        sudo "${{ github.workspace }}/.local/temporary/setup_llvm/llvm.sh" "${{ inputs.version }}" "all"
+        Remove-Item -Force -Recurse -Path "${{ github.workspace }}/.local/temporary/setup_llvm"
+        Add-Content -Encoding utf8 -Path $env:GITHUB_PATH -Value "/usr/lib/llvm-${{ inputs.version }}/bin"
+    - name: install
+      if: ${{ inputs.host_platform == 'macintosh' }}
+      shell: pwsh
+      run: |
+        brew install "llvm@${{ inputs.version }}"
+        brew link "llvm@${{ inputs.version }}"
+    - name: check
+      if: ${{ inputs.host_platform == 'windows' || inputs.host_platform == 'linux' || inputs.host_platform == 'macintosh' }}
+      shell: pwsh
+      run: |
+        clang --version
+        llvm-strip --version

@@ -1,0 +1,25 @@
+name: _
+description: _
+inputs:
+  location:
+    required: true
+  target:
+    required: true
+  artifact_name:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: download
+      if: ${{ inputs.target == 'artifact' }}
+      uses: actions/download-artifact@v8
+      with:
+        pattern: ${{ inputs.artifact_name }}
+        path: ${{ inputs.location }}
+        merge-multiple: true
+        skip-decompress: true
+    - name: check
+      if: ${{ true }}
+      shell: pwsh
+      run: |
+        Get-ChildItem -Recurse -Path "${{ inputs.location }}"

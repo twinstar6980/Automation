@@ -1,0 +1,129 @@
+name: build - Twinning
+on:
+  workflow_call:
+    inputs:
+      repository_url:
+        required: true
+        type: string
+      enable_signing:
+        required: true
+        type: boolean
+      target_platform:
+        required: true
+        type: string
+    secrets:
+      keystore_file:
+        required: false
+      keystore_password:
+        required: false
+env:
+  host_platform: |-
+    ${{ fromJSON('{
+      "windows.amd64": "windows",
+      "linux.amd64": "linux",
+      "macintosh.arm64": "macintosh",
+      "android.arm64": "windows",
+      "iphone.arm64": "macintosh",
+    }')[inputs.target_platform] }}
+jobs:
+  main:
+    runs-on: |-
+      ${{ fromJSON('{
+        "windows.amd64": "windows-2025-vs2026",
+        "linux.amd64": "ubuntu-24.04",
+        "macintosh.arm64": "macos-26",
+        "android.arm64": "windows-2025-vs2026",
+        "iphone.arm64": "macos-26",
+      }')[inputs.target_platform] }}
+    steps:
+      - name: check out
+        if: ${{ true }}
+        uses: actions/checkout@v4
+        with: {}
+      - name: setup python
+        if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
+        uses: ./.github/actions/setup_python
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '3.14.3'
+      - name: setup windows-sdk
+        if: ${{ inputs.target_platform == 'windows.amd64' }}
+        uses: ./.github/actions/setup_windowssdk
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '26100'
+      - name: setup android-sdk
+        if: ${{ inputs.target_platform == 'android.arm64' }}
+        uses: ./.github/actions/setup_androidsdk
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '36.1'
+          build_version: '36.1.0'
+          ndk_version: '29.0.14206865'
+      - name: setup llvm
+        if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'iphone.arm64' }}
+        uses: ./.github/actions/setup_llvm
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '21'
+          windows_version: '21.1.8-20251216'
+      - name: setup xmake
+        if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
+        uses: ./.github/actions/setup_xmake
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '3.0.8'
+      - name: setup nodejs
+        if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
+        uses: ./.github/actions/setup_nodejs
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '25.9.0'
+      - name: setup flutter
+        if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
+        uses: ./.github/actions/setup_flutter
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '3.41.6'
+      - name: setup msbuild
+        if: ${{ inputs.target_platform == 'windows.amd64' }}
+        uses: ./.github/actions/setup_msbuild
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '18.4.0'
+      - name: setup xcode
+        if: ${{ inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'iphone.arm64' }}
+        uses: ./.github/actions/setup_xcode
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '26.4'
+      - name: setup create-dmg
+        if: ${{ inputs.target_platform == 'macintosh.arm64' }}
+        uses: ./.github/actions/setup_createdmg
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: 'latest'
+      - name: clone repository
+        if: ${{ true }}
+        shell: pwsh
+        run: |
+          git clone "${{ inputs.repository_url }}" "${{ github.workspace }}/repository"
+      - name: prepare keystore
+        if: ${{ inputs.enable_signing }}
+        uses: ./.github/actions/prepare_keystore
+        with:
+          location: ${{ github.workspace }}/repository/.local/keystore
+          file: ${{ secrets.keystore_file }}
+          password: ${{ secrets.keystore_password }}
+      - name: build repository
+        if: ${{ true }}
+        shell: pwsh
+        run: |
+          python3 "${{ github.workspace }}/repository/build.py" "${{ inputs.target_platform }}"
+      - name: upload artifact
+        if: ${{ true }}
+        uses: ./.github/actions/upload_file
+        with:
+          location: ${{ github.workspace }}/repository/.local/distribution/${{ inputs.target_platform }}.bundle.zip
+          target: artifact
+          artifact_name: ${{ inputs.target_platform }}.distribution

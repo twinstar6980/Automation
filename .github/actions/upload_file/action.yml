@@ -1,0 +1,21 @@
+name: _
+description: _
+inputs:
+  location:
+    required: true
+  target:
+    required: true
+  artifact_name:
+    required: true
+  release_tag:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: upload
+      if: ${{ inputs.target == 'artifact' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ${{ inputs.location }}
+        archive: false

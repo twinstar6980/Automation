@@ -1,0 +1,28 @@
+name: _
+description: _
+inputs:
+  host_platform:
+    required: true
+  version:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: install
+      if: ${{ inputs.host_platform == 'windows' }}
+      uses: GuillaumeFalourd/setup-windows10-sdk-action@v2.4
+      with:
+        sdk-version: ${{ inputs.version }}
+    - name: install
+      if: ${{ inputs.host_platform == 'windows' }}
+      shell: pwsh
+      run: |
+        Add-Content -Encoding utf8 -Path $env:GITHUB_PATH -Value "C:/Program Files (x86)/Windows Kits/10/bin/10.0.${{ inputs.version }}.0/x64"
+    - name: check
+      if: ${{ inputs.host_platform == 'windows' }}
+      shell: pwsh
+      run: |
+        mt /?
+        makepri /?
+        makeappx /?
+        signtool /?

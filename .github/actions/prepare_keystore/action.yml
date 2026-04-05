@@ -1,0 +1,24 @@
+name: _
+description: _
+inputs:
+  location:
+    required: true
+  file:
+    required: true
+  password:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: prepare
+      if: ${{ true }}
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Force -Path "${{ inputs.location }}"
+        Set-Content -AsByteStream -Path "${{ inputs.location }}/file.p12" -Value ([System.Convert]::FromBase64String("${{ inputs.file }}"))
+        Set-Content -Encoding utf8 -NoNewline -Path "${{ inputs.location }}/password.txt" -Value "${{ inputs.password }}"
+    - name: check
+      if: ${{ true }}
+      shell: pwsh
+      run: |
+        Get-ChildItem -Recurse -Path "${{ inputs.location }}"

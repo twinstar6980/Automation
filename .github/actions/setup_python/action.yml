@@ -1,0 +1,20 @@
+name: _
+description: _
+inputs:
+  host_platform:
+    required: true
+  version:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: install
+      if: ${{ inputs.host_platform == 'windows' || inputs.host_platform == 'linux' || inputs.host_platform == 'macintosh' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ inputs.version }}
+    - name: check
+      if: ${{ inputs.host_platform == 'windows' || inputs.host_platform == 'linux' || inputs.host_platform == 'macintosh' }}
+      shell: pwsh
+      run: |
+        python3 --version

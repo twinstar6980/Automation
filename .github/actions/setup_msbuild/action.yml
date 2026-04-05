@@ -1,0 +1,21 @@
+name: _
+description: _
+inputs:
+  host_platform:
+    required: true
+  version:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: install
+      if: ${{ inputs.host_platform == 'windows' }}
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: '[${{ inputs.version }}, )'
+        msbuild-architecture: x64
+    - name: check
+      if: ${{ inputs.host_platform == 'windows' }}
+      shell: pwsh
+      run: |
+        MSBuild -version

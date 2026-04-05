@@ -1,0 +1,20 @@
+name: _
+description: _
+inputs:
+  host_platform:
+    required: true
+  version:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: install
+      if: ${{ inputs.host_platform == 'macintosh' }}
+      shell: pwsh
+      run: |
+        brew install "create-dmg"
+    - name: check
+      if: ${{ inputs.host_platform == 'macintosh' }}
+      shell: pwsh
+      run: |
+        create-dmg --version

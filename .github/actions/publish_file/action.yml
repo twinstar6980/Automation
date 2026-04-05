@@ -1,0 +1,21 @@
+name: _
+description: _
+inputs:
+  location:
+    required: true
+  target:
+    required: true
+  release_tag:
+    required: true
+  release_message:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: upload
+      if: ${{ inputs.target == 'release' }}
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ inputs.release_tag }}
+        body: ${{ inputs.release_message }}
+        files: ${{ inputs.location }}

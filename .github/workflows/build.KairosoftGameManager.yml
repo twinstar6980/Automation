@@ -1,0 +1,76 @@
+name: build - KairosoftGameManager
+on:
+  workflow_call:
+    inputs:
+      repository_url:
+        required: true
+        type: string
+      enable_signing:
+        required: true
+        type: boolean
+      target_platform:
+        required: true
+        type: string
+    secrets:
+      keystore_file:
+        required: false
+      keystore_password:
+        required: false
+env:
+  host_platform: |-
+    ${{ fromJSON('{
+      "windows.amd64": "windows",
+    }')[inputs.target_platform] }}
+jobs:
+  main:
+    runs-on: |-
+      ${{ fromJSON('{
+        "windows.amd64": "windows-2025-vs2026",
+      }')[inputs.target_platform] }}
+    steps:
+      - name: check out
+        if: ${{ true }}
+        uses: actions/checkout@v4
+        with: {}
+      - name: setup python
+        if: ${{ inputs.target_platform == 'windows.amd64' }}
+        uses: ./.github/actions/setup_python
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '3.14.3'
+      - name: setup windows-sdk
+        if: ${{ inputs.target_platform == 'windows.amd64' }}
+        uses: ./.github/actions/setup_windowssdk
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '26100'
+      - name: setup msbuild
+        if: ${{ inputs.target_platform == 'windows.amd64' }}
+        uses: ./.github/actions/setup_msbuild
+        with:
+          host_platform: ${{ env.host_platform }}
+          version: '18.3.0'
+      - name: clone repository
+        if: ${{ true }}
+        shell: pwsh
+        run: |
+          git clone "${{ inputs.repository_url }}" "${{ github.workspace }}/repository"
+      - name: prepare keystore
+        if: ${{ inputs.enable_signing }}
+        uses: ./.github/actions/prepare_keystore
+        with:
+          location: ${{ github.workspace }}/repository/.local/keystore
+          file: ${{ secrets.keystore_file }}
+          password: ${{ secrets.keystore_password }}
+      - name: build repository
+        if: ${{ true }}
+        shell: pwsh
+        run: |
+          python3 "${{ github.workspace }}/repository/build.py" "${{ inputs.target_platform }}"
+      - name: upload artifact
+        if: ${{ true }}
+        uses: ./.github/actions/upload_file
+        with:
+          location: ${{ github.workspace }}/repository/.local/distribution/${{ inputs.target_platform }}.application.*
+          target: artifact
+          artifact_name: ${{ inputs.target_platform }}.distribution

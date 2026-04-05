@@ -1,0 +1,17 @@
+# Common
+/**/*             binary
+
+# General - Article
+/**/*.md          text eol=lf
+
+# Environment - Git
+/**/.git*         text eol=lf
+
+# Environment - GitHub
+/**/.github/*.yml text eol=lf
+
+# Environment - EditConfig
+/**/.editorconfig text eol=lf
+
+# Project
+/LICENSE          text eol=lf

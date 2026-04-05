@@ -1,0 +1,57 @@
+name: diliver - KairosoftGameManager
+on:
+  workflow_dispatch:
+    inputs:
+      repository_url:
+        required: true
+        type: string
+        default: 'https://github.com/twinstar6980/KairosoftGameManager'
+      enable_signing:
+        required: true
+        type: boolean
+        default: true
+      build_windows_amd64:
+        required: true
+        type: boolean
+        default: true
+      publish_release:
+        required: true
+        type: boolean
+        default: false
+      publish_release_tag_suffix:
+        required: true
+        type: string
+        default: 'latest'
+env:
+  keystore_provided: ${{ secrets.keystore_file != '' && secrets.keystore_password != '' }}
+jobs:
+  check:
+    if: ${{ true }}
+    needs: []
+    runs-on: ubuntu-slim
+    steps:
+      - name: keystore
+        if: ${{ inputs.enable_signing && !fromJSON(env.keystore_provided) }}
+        shell: pwsh
+        run: |
+          Write-Host "please provide 'keystore_file' and 'keystore_password' in repository secrets"
+          exit 1
+  build_windows_amd64:
+    if: ${{ inputs.build_windows_amd64 }}
+    needs:
+      - check
+    uses: ./.github/workflows/build.KairosoftGameManager.yml
+    with:
+      repository_url: ${{ inputs.repository_url }}
+      enable_signing: ${{ inputs.enable_signing }}
+      target_platform: windows.amd64
+    secrets: inherit
+  publish:
+    if: ${{ !failure() && inputs.publish_release }}
+    needs:
+      - build_windows_amd64
+    uses: ./.github/workflows/publish.yml
+    with:
+      publish_release: ${{ inputs.publish_release }}
+      publish_release_tag: KairosoftGameManager-${{ inputs.publish_release_tag_suffix }}
+    secrets: inherit

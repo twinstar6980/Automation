@@ -1,0 +1,39 @@
+name: publish
+on:
+  workflow_call:
+    inputs:
+      publish_release:
+        required: true
+        type: boolean
+      publish_release_tag:
+        required: true
+        type: string
+jobs:
+  main:
+    runs-on: ubuntu-slim
+    steps:
+      - name: check out
+        if: ${{ true }}
+        uses: actions/checkout@v4
+        with: {}
+      - name: download artifact
+        if: ${{ true }}
+        uses: ./.github/actions/download_file
+        with:
+          location: ${{ github.workspace }}/artifact
+          target: artifact
+          artifact_name: '*'
+      - name: query information
+        id: query_information
+        if: ${{ true }}
+        uses: ./.github/actions/query_information
+        with:
+          target: time
+      - name: publish release
+        if: ${{ inputs.publish_release }}
+        uses: ./.github/actions/publish_file
+        with:
+          location: ${{ github.workspace }}/artifact/*
+          target: release
+          release_tag: ${{ inputs.publish_release_tag }}
+          release_message: 'build on ${{ steps.query_information.outputs.time }}'

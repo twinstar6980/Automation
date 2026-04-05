@@ -1,0 +1,17 @@
+name: _
+description: _
+inputs:
+  target:
+    required: true
+outputs:
+  time:
+    value: ${{ steps.query_time.outputs.time }}
+runs:
+  using: composite
+  steps:
+    - name: query
+      id: query_time
+      if: ${{ inputs.target == 'time' }}
+      shell: pwsh
+      run: |
+        Add-Content -Encoding utf8 -Path $env:GITHUB_OUTPUT -Value "time=$(Get-Date -Format "yy-MM-dd HH:mm:ss")"
