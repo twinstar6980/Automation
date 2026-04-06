@@ -17,6 +17,7 @@ runs:
       shell: pwsh
       run: |
         $timeZone = [TimeZoneInfo]::FindSystemTimeZoneById("${{ inputs.time_zone }}")
-        $time = [TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+        $timeLocal = [TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+        $time = New-Object DateTimeOffset($timeLocal, $timeZone.BaseUtcOffset)
         $timeString = $time.ToString("yy-MM-dd HH:mm:ss zzz")
         Add-Content -Encoding utf8 -Path $env:GITHUB_OUTPUT -Value "time=$($timeString)"
