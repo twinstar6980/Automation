@@ -29,6 +29,7 @@ jobs:
         uses: ./.github/actions/query_information
         with:
           target: time
+          time_zone: 'Asia/Shanghai'
       - name: publish release
         if: ${{ inputs.publish_release }}
         uses: ./.github/actions/publish_file
