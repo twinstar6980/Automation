@@ -45,7 +45,7 @@ jobs:
         uses: ./.github/actions/setup_python
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.14.3'
+          version: '3.14.4'
       - name: setup windows-sdk
         if: ${{ inputs.target_platform == 'windows.amd64' }}
         uses: ./.github/actions/setup_windowssdk

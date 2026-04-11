@@ -37,7 +37,7 @@ jobs:
         uses: ./.github/actions/setup_python
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.14.3'
+          version: '3.14.4'
       - name: setup windows-sdk
         if: ${{ inputs.target_platform == 'windows.amd64' }}
         uses: ./.github/actions/setup_windowssdk
@@ -49,7 +49,7 @@ jobs:
         uses: ./.github/actions/setup_msbuild
         with:
           host_platform: ${{ env.host_platform }}
-          version: '18.3.0'
+          version: '18.4.0'
       - name: clone repository
         if: ${{ true }}
         shell: pwsh
