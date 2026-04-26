@@ -31,7 +31,7 @@ runs:
       shell: pwsh
       run: |
         brew install "llvm@${{ inputs.version }}"
-        brew link "llvm@${{ inputs.version }}"
+        brew link --force "llvm@${{ inputs.version }}"
     - name: check
       if: ${{ inputs.host_platform == 'windows' || inputs.host_platform == 'linux' || inputs.host_platform == 'macintosh' }}
       shell: pwsh
