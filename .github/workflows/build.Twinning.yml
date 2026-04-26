@@ -97,8 +97,8 @@ jobs:
         with:
           host_platform: ${{ env.host_platform }}
           version: '26.4'
-      - name: setup create-dmg
-        if: ${{ inputs.target_platform == 'macintosh.arm64' }}
+      - name: setup appimagetool
+        if: ${{ inputs.target_platform == 'linux.amd64' }}
         uses: ./.github/actions/setup_appimagetool
         with:
           host_platform: ${{ env.host_platform }}
