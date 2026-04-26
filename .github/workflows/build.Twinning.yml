@@ -65,8 +65,8 @@ jobs:
         uses: ./.github/actions/setup_llvm
         with:
           host_platform: ${{ env.host_platform }}
-          version: '21'
-          windows_version: '21.1.8-20251216'
+          version: '22'
+          windows_version: '22.1.4-20260421'
       - name: setup xmake
         if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_xmake

@@ -4,11 +4,11 @@
 
 ## 构建列表
 
-* [`Twinning`](https://github.com/twinstar6980/Automation/actions/workflows/diliver.Twinning.yml)
+* [`Twinning`](https://github.com/twinstar6980/Twinning)
 
   * [latest](https://github.com/twinstar6980/Automation/releases/tag/Twinning-latest)
 
-* [`KairosoftGameManager`](https://github.com/twinstar6980/Automation/actions/workflows/diliver.KairosoftGameManager.yml)
+* [`KairosoftGameManager`](https://github.com/twinstar6980/KairosoftGameManager)
 
   * [latest](https://github.com/twinstar6980/Automation/releases/tag/KairosoftGameManager-latest)
 
