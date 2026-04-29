@@ -84,13 +84,7 @@ jobs:
         uses: ./.github/actions/setup_flutter
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.41.7'
-      - name: setup msbuild
-        if: ${{ inputs.target_platform == 'windows.amd64' }}
-        uses: ./.github/actions/setup_msbuild
-        with:
-          host_platform: ${{ env.host_platform }}
-          version: '18.4.0'
+          version: '3.41.8'
       - name: setup xcode
         if: ${{ inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_xcode
