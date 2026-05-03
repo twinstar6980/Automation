@@ -84,7 +84,7 @@ jobs:
         uses: ./.github/actions/setup_flutter
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.41.8'
+          version: '3.41.9'
       - name: setup xcode
         if: ${{ inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_xcode
