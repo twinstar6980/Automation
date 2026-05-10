@@ -9,7 +9,7 @@ on:
       expect_commit:
         required: true
         type: string
-        default: ''
+        default: 'latest'
       enable_signing:
         required: true
         type: boolean

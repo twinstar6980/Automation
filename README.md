@@ -20,7 +20,7 @@
 
 * `expect_commit`
 
-  期望构建的历史提交，如果为空，则在最新提交上构建。
+  期望构建的提交的 SHA ，或设置为 `latest` 使用最新提交。
 
 * `enable_signing`
 

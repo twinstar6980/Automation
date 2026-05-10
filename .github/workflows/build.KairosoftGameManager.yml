@@ -59,7 +59,7 @@ jobs:
         run: |
           git clone "${{ inputs.repository_url }}" "${{ github.workspace }}/repository"
       - name: reversion commit
-        if: ${{ inputs.expect_commit != '' }}
+        if: ${{ inputs.expect_commit != 'latest' }}
         shell: pwsh
         run: |
           git -C "${{ github.workspace }}/repository" reset --hard "${{ inputs.expect_commit }}"
