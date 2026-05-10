@@ -6,6 +6,10 @@ on:
         required: true
         type: string
         default: 'https://github.com/twinstar6980/KairosoftGameManager'
+      expect_commit:
+        required: true
+        type: string
+        default: ''
       enable_signing:
         required: true
         type: boolean
@@ -43,6 +47,7 @@ jobs:
     uses: ./.github/workflows/build.KairosoftGameManager.yml
     with:
       repository_url: ${{ inputs.repository_url }}
+      expect_commit: ${{ inputs.expect_commit }}
       enable_signing: ${{ inputs.enable_signing }}
       target_platform: windows.amd64
     secrets: inherit

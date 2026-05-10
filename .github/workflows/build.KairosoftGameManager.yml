@@ -5,6 +5,9 @@ on:
       repository_url:
         required: true
         type: string
+      expect_commit:
+        required: true
+        type: string
       enable_signing:
         required: true
         type: boolean
@@ -55,6 +58,11 @@ jobs:
         shell: pwsh
         run: |
           git clone "${{ inputs.repository_url }}" "${{ github.workspace }}/repository"
+      - name: reversion commit
+        if: ${{ inputs.expect_commit != '' }}
+        shell: pwsh
+        run: |
+          git -C "${{ github.workspace }}/repository" reset --hard "${{ inputs.expect_commit }}"
       - name: prepare keystore
         if: ${{ inputs.enable_signing }}
         uses: ./.github/actions/prepare_keystore

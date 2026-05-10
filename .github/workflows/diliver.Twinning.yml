@@ -6,6 +6,10 @@ on:
         required: true
         type: string
         default: 'https://github.com/twinstar6980/Twinning'
+      expect_commit:
+        required: true
+        type: string
+        default: ''
       enable_signing:
         required: true
         type: boolean
@@ -59,6 +63,7 @@ jobs:
     uses: ./.github/workflows/build.Twinning.yml
     with:
       repository_url: ${{ inputs.repository_url }}
+      expect_commit: ${{ inputs.expect_commit }}
       enable_signing: ${{ inputs.enable_signing }}
       target_platform: windows.amd64
     secrets: inherit
@@ -69,6 +74,7 @@ jobs:
     uses: ./.github/workflows/build.Twinning.yml
     with:
       repository_url: ${{ inputs.repository_url }}
+      expect_commit: ${{ inputs.expect_commit }}
       enable_signing: ${{ inputs.enable_signing }}
       target_platform: linux.amd64
     secrets: inherit
@@ -79,6 +85,7 @@ jobs:
     uses: ./.github/workflows/build.Twinning.yml
     with:
       repository_url: ${{ inputs.repository_url }}
+      expect_commit: ${{ inputs.expect_commit }}
       enable_signing: ${{ inputs.enable_signing }}
       target_platform: macintosh.arm64
     secrets: inherit
@@ -89,6 +96,7 @@ jobs:
     uses: ./.github/workflows/build.Twinning.yml
     with:
       repository_url: ${{ inputs.repository_url }}
+      expect_commit: ${{ inputs.expect_commit }}
       enable_signing: ${{ inputs.enable_signing }}
       target_platform: android.arm64
     secrets: inherit
@@ -99,6 +107,7 @@ jobs:
     uses: ./.github/workflows/build.Twinning.yml
     with:
       repository_url: ${{ inputs.repository_url }}
+      expect_commit: ${{ inputs.expect_commit }}
       enable_signing: ${{ inputs.enable_signing }}
       target_platform: iphone.arm64
     secrets: inherit
