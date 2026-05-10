@@ -24,7 +24,7 @@ jobs:
           target: artifact
           artifact_name: '*'
       - name: query information
-        id: query_information
+        id: query_information_time
         if: ${{ true }}
         uses: ./.github/actions/query_information
         with:
@@ -37,4 +37,12 @@ jobs:
           location: ${{ github.workspace }}/artifact/*
           target: release
           release_tag: ${{ inputs.publish_release_tag }}
-          release_message: 'build on ${{ steps.query_information.outputs.time }}'
+          release_message: 'build on ${{ steps.query_information_time.outputs.readable_text }}'
+      - name: publish release
+        if: ${{ inputs.publish_release }}
+        uses: ./.github/actions/publish_file
+        with:
+          location: ${{ github.workspace }}/artifact/*
+          target: release
+          release_tag: ${{ inputs.publish_release_tag }}-${{ steps.query_information_time.outputs.compact_text }}
+          release_message: 'build on ${{ steps.query_information_time.outputs.readable_text }}'

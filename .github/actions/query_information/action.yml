@@ -6,8 +6,10 @@ inputs:
   time_zone:
     required: true
 outputs:
-  time:
-    value: ${{ steps.query_time.outputs.time }}
+  compact_text:
+    value: ${{ steps.query_time.outputs.compact_text }}
+  readable_text:
+    value: ${{ steps.query_time.outputs.readable_text }}
 runs:
   using: composite
   steps:
@@ -19,5 +21,7 @@ runs:
         $timeZone = [TimeZoneInfo]::FindSystemTimeZoneById("${{ inputs.time_zone }}")
         $timeLocal = [TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
         $time = New-Object DateTimeOffset($timeLocal, $timeZone.BaseUtcOffset)
-        $timeString = $time.ToString("yy-MM-dd HH:mm:ss zzz")
-        Add-Content -Encoding utf8 -Path $env:GITHUB_OUTPUT -Value "time=$($timeString)"
+        $compactText = $time.ToString("yyMMddHHmmss")
+        $readableText = $time.ToString("yy-MM-dd HH:mm:ss zzz")
+        Add-Content -Encoding utf8 -Path $env:GITHUB_OUTPUT -Value "compact_text=$($compactText)"
+        Add-Content -Encoding utf8 -Path $env:GITHUB_OUTPUT -Value "readable_text=$($readableText)"
