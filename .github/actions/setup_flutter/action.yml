@@ -15,6 +15,11 @@ runs:
         channel: stable
         flutter-version: ${{ inputs.version }}
     - name: install
+      if: ${{ inputs.host_platform == 'windows' }}
+      shell: pwsh
+      run: |
+        Add-Content -Encoding utf8 -Path $env:GITHUB_ENV -Value "PUB_CACHE=${{ github.workspace }}/.local/temporary/pub_cache"
+    - name: install
       if: ${{ inputs.host_platform == 'linux' }}
       shell: pwsh
       run: |
