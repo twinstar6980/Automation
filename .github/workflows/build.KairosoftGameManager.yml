@@ -46,7 +46,7 @@ jobs:
         uses: ./.github/actions/setup_windowssdk
         with:
           host_platform: ${{ env.host_platform }}
-          version: '26100'
+          version: '28000'
       - name: setup msbuild
         if: ${{ inputs.target_platform == 'windows.amd64' }}
         uses: ./.github/actions/setup_msbuild

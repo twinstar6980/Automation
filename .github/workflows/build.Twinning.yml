@@ -54,7 +54,7 @@ jobs:
         uses: ./.github/actions/setup_windowssdk
         with:
           host_platform: ${{ env.host_platform }}
-          version: '26100'
+          version: '28000'
       - name: setup android-sdk
         if: ${{ inputs.target_platform == 'android.arm64' }}
         uses: ./.github/actions/setup_androidsdk
@@ -75,13 +75,13 @@ jobs:
         uses: ./.github/actions/setup_xmake
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.0.8'
+          version: '3.0.9'
       - name: setup nodejs
         if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_nodejs
         with:
           host_platform: ${{ env.host_platform }}
-          version: '26.1.0'
+          version: '26.2.0'
       - name: setup flutter
         if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_flutter
