@@ -25,7 +25,7 @@ env:
       "windows.amd64": "windows",
       "linux.amd64": "linux",
       "macintosh.arm64": "macintosh",
-      "android.arm64": "windows",
+      "android.arm64": "linux",
       "iphone.arm64": "macintosh",
     }')[inputs.target_platform] }}
 jobs:
@@ -35,7 +35,7 @@ jobs:
         "windows.amd64": "windows-2025-vs2026",
         "linux.amd64": "ubuntu-24.04",
         "macintosh.arm64": "macos-26",
-        "android.arm64": "windows-2025-vs2026",
+        "android.arm64": "ubuntu-24.04",
         "iphone.arm64": "macos-26",
       }')[inputs.target_platform] }}
     steps:
@@ -54,7 +54,7 @@ jobs:
         uses: ./.github/actions/setup_windowssdk
         with:
           host_platform: ${{ env.host_platform }}
-          version: '28000'
+          version: '26100'
       - name: setup android-sdk
         if: ${{ inputs.target_platform == 'android.arm64' }}
         uses: ./.github/actions/setup_androidsdk
