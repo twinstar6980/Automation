@@ -25,7 +25,7 @@ env:
       "windows.amd64": "windows",
       "linux.amd64": "linux",
       "macintosh.arm64": "macintosh",
-      "android.arm64": "linux",
+      "android.arm64": "macintosh",
       "iphone.arm64": "macintosh",
     }')[inputs.target_platform] }}
 jobs:
