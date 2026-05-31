@@ -25,7 +25,7 @@ env:
       "windows.amd64": "windows",
       "linux.amd64": "linux",
       "macintosh.arm64": "macintosh",
-      "android.arm64": "macintosh",
+      "android.arm64": "windows",
       "iphone.arm64": "macintosh",
     }')[inputs.target_platform] }}
 jobs:
@@ -35,7 +35,7 @@ jobs:
         "windows.amd64": "windows-2025-vs2026",
         "linux.amd64": "ubuntu-24.04",
         "macintosh.arm64": "macos-26",
-        "android.arm64": "macos-26",
+        "android.arm64": "windows-2025-vs2026",
         "iphone.arm64": "macos-26",
       }')[inputs.target_platform] }}
     steps:
