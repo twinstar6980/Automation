@@ -93,7 +93,7 @@ jobs:
         uses: ./.github/actions/setup_xcode
         with:
           host_platform: ${{ env.host_platform }}
-          version: '26.4'
+          version: '26.5'
       - name: setup appimagetool
         if: ${{ inputs.target_platform == 'linux.amd64' }}
         uses: ./.github/actions/setup_appimagetool
