@@ -54,7 +54,7 @@ jobs:
         uses: ./.github/actions/setup_windowssdk
         with:
           host_platform: ${{ env.host_platform }}
-          version: '26100'
+          version: '28000'
       - name: setup android-sdk
         if: ${{ inputs.target_platform == 'android.arm64' }}
         uses: ./.github/actions/setup_androidsdk
