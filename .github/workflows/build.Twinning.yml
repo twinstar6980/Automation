@@ -48,7 +48,7 @@ jobs:
         uses: ./.github/actions/setup_python
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.14.6'
+          version: '3.14.7'
       - name: setup windows-sdk
         if: ${{ inputs.target_platform == 'windows.amd64' }}
         uses: ./.github/actions/setup_windowssdk
@@ -75,7 +75,7 @@ jobs:
         uses: ./.github/actions/setup_xmake
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.0.9'
+          version: '3.1.0'
       - name: setup nodejs
         if: ${{ inputs.target_platform == 'windows.amd64' || inputs.target_platform == 'linux.amd64' || inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'android.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_nodejs
@@ -87,7 +87,7 @@ jobs:
         uses: ./.github/actions/setup_flutter
         with:
           host_platform: ${{ env.host_platform }}
-          version: '3.44.9'
+          version: '3.47.0'
       - name: setup xcode
         if: ${{ inputs.target_platform == 'macintosh.arm64' || inputs.target_platform == 'iphone.arm64' }}
         uses: ./.github/actions/setup_xcode
